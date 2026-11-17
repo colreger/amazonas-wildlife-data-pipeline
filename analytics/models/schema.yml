@@ -1,0 +1,49 @@
+version: 2
+sources:
+  - name: gbif
+    schema: main
+    tables:
+      - name: observation_input
+      - name: observation_versions
+models:
+  - name: hub_observation
+    description: One hub row per GBIF observation ID.
+    columns:
+      - name: observation_key
+        data_tests: [not_null, unique]
+  - name: hub_species
+    description: One hub row per scientific name in this sample. The source extract does not store GBIF taxon keys.
+    columns:
+      - name: species_key
+        data_tests: [not_null, unique]
+  - name: link_observation_species
+    description: The species associated with each observation in the input sample.
+    columns:
+      - name: observation_key
+        data_tests: [not_null, unique]
+      - name: species_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('hub_species')
+                field: species_key
+  - name: sat_observation_date
+    description: Date versions, including one explicitly simulated correction for the history demo.
+    columns:
+      - name: observed_on
+        description: Date reported in the source or the simulated corrected date.
+  - name: fct_observations
+    description: One row per observation from the real GBIF sample.
+    columns:
+      - name: gbif_id
+        data_tests: [not_null, unique]
+      - name: species
+        data_tests: [not_null]
+  - name: mart_species_month
+    description: Counts of dated sample observations, one row per species and calendar month.
+    columns:
+      - name: observation_month
+        data_tests: [not_null]
+      - name: species
+        data_tests: [not_null]

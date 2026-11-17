@@ -1,0 +1,22 @@
+services:
+  postgres:
+    image: postgres:14.4
+    environment:
+      POSTGRES_DB: amazonas
+      POSTGRES_USER: amazonas
+      POSTGRES_PASSWORD: local-demo-only
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U amazonas -d amazonas"]
+      interval: 2s
+      timeout: 3s
+      retries: 15
+  grafana:
+    build: ./grafana
+    ports:
+      - "127.0.0.1:3036:3000"
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+    depends_on:
+      postgres:
+        condition: service_healthy

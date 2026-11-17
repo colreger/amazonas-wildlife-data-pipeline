@@ -1,0 +1,7 @@
+name: amazonas
+version: 1.0.0
+config-version: 2
+profile: amazonas
+models:
+  amazonas:
+    +materialized: table

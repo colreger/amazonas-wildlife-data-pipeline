@@ -1,0 +1,26 @@
+{
+  "uid": "amazonas-species",
+  "title": "Amazonas Wildlife Observations",
+  "schemaVersion": 39,
+  "version": 1,
+  "panels": [
+    {
+      "id": 1,
+      "type": "table",
+      "title": "Observations per species and calendar month",
+      "description": "Counts come from the tested dbt data mart and describe the dated records in the sample.",
+      "datasource": {"type": "postgres", "uid": "amazonas-postgres"},
+      "gridPos": {"h": 15, "w": 24, "x": 0, "y": 0},
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {"type": "postgres", "uid": "amazonas-postgres"},
+          "editorMode": "code",
+          "rawQuery": true,
+          "format": "table",
+          "rawSql": "SELECT to_char(observation_month, 'YYYY-MM') AS month, species, observation_count AS observations FROM public.mart_species_month ORDER BY observation_month DESC, observation_count DESC, species"
+        }
+      ]
+    }
+  ]
+}

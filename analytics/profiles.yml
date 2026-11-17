@@ -1,0 +1,7 @@
+amazonas:
+  target: local
+  outputs:
+    local:
+      type: duckdb
+      path: "{{ env_var('AMAZONAS_ANALYTICS_DB', '../output/analytics.duckdb') }}"
+      threads: 1
